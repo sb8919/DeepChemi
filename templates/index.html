@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DeepChemi</title>
+    <script src="https://use.fontawesome.com/releases/v6.2.0/js/all.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static',filename='javascript/javascript.js') }}"></script>
+   
+</head>
+
+<body>
+    <section class="sel_chem">
+        <nav class="nav_bar">
+            <a style="text-decoration:none" href="http://orion.mokpo.ac.kr:8490">
+                <h1 id="logo">DeepChemi</h1>
+            </a>
+        </nav>
+        <div class="chem_list">
+            <div class="check_element">
+                <script>
+                    var ot = new Array('H', 'Na', 'K', 'Be', 'Ca', 'B', 'C', 'N', 'P', 'O', 'S', 'F', 'Cl')
+                    for (i = 0; i <= ot.length - 1; i++) {
+                        document.write('<input type="checkbox" name ="chk" class="element" id="', ot[i], '" value="', ot[i], '" onClick="count_check(this);" ><label for=', ot[i], '>', ot[i], '</label></input>')
+                        if (i == 5) { document.writeln('<br>') }
+                    }
+                </script>
+            </div>
+            <br>
+            <div class="search_bar">
+                <input type="text" id="searchid" style="text-align:center; font-size:30px;"
+                    placeholder="원소를 입력하세요 ex) H,O,S,N">
+                <a onClick="delete_value();" class="back_space"><i color ='gray' class="fa-solid fa-circle-xmark"></i></a>
+                <a onClick="check_value();" class="search_btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <label style="color:white;"><input type="checkbox" id="condition"> 조건: 조합원소 4개</label>
+            </div>
+        </div>
+    </section>
+    <section class="chem_show">
+        <div class="chem_div">
+            <div class="chem_in">
+                <div class="title">
+                    <a style="font-size:20pt; text-align:left; width:fit-content; font-weight: bold;">Selected
+                        Elements</a>
+                    <nav class="tooltip"><i class="fa-solid fa-circle-question"></i>
+                        <span class="tooltiptext tooltip-bottom">선택된 원소가 보입니다.</span>
+                    </nav>
+                </div>
+
+                {%for i in input%}
+                <div class="element_in">
+                    <h1>{{i}}</h1>
+                </div>
+                {%endfor%}
+            </div>
+
+            <br>
+            <div class="chem_out">
+                <div class="title">
+                    <a style="font-size:20pt; text-align:left; font-weight: bold;">Molecure</a>
+                    <nav class="tooltip"><i class="fa-solid fa-circle-question"></i>
+                        <span class="tooltiptext tooltip-bottom">조합된 원소가 보입니다.</span>
+                    </nav>
+                </div>
+                <div class="element_list">
+                    {%for e1,e2 in elements%}
+                    <div class="element_combi">
+                        <a href="http://orion.mokpo.ac.kr:8490/show_el?element={{e2.split(': ')[1]}}"> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEz6jQDrdFKKmj3pmMo46b3H26BRVzCId8f1Mu8P3oO24mdD156P3yM-psqa5bek-ho0s&usqp=CAU"> </a>
+                        
+                        <p>{{e1}}</p>
+                        <p>{{e2}}</p>
+                    </div>
+                    {%endfor%}
+                </div>
+                <br>
+
+            </div>
+        </div>
+    </section>
+    <script>
+        if (1 < document.getElementsByClassName("element_combi").length) {
+            document.getElementsByClassName("element_list")[0].style.overflowX = "scroll";
+            var screenw = screen.width;
+            document.getElementsByClassName("element_list")[0].style.width=screenw;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DeepChemi</title>
+    <style>
+        body{
+            width:100%;
+            background:black;
+            height:auto;
+        }
+        div:not(.logo){
+            color:white;
+            margin-top: 800px;
+            text-align: center;
+            opacity: 0;
+            transition: all 1s;
+            font-size: 2em;
+        }
+        .logo {
+            height: 100vh;
+            /*This part is important for centering*/
+            display: grid;
+            place-items: center;
+            text-align: center;
+            
+          }
+        .logo h1{
+            color:white;
+            width: 100%;
+            animation: typing 1.6s steps(22), blink .5s step-end infinite alternate;
+            
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid;
+            font-family: monospace;
+            font-size: 50pt;
+        }
+        
+        @keyframes typing {
+            from {
+              width: 0
+            }
+          }
+              
+          @keyframes blink {
+            50% {
+              border-color: transparent
+            }
+          }
+
+
+        .scdown{
+            color:white;
+            transition:0.8s;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            opacity: 1;
+            text-align: center;
+        }
+
+        
+        .go_home{
+        margin-bottom:300px;
+        width:100%;
+        color:white;
+        text-align: center;
+        opacity: 0;
+        transition: all 1.5s;
+        font-size: 2em;
+        }
+        .go_home a{
+        text-transform: uppercase;
+        background-image: linear-gradient(
+            -225deg,
+            #231557 0%,
+            #44107a 29%,
+            #ff1361 67%,
+            #fff800 100%
+        );
+        background-size: auto auto;
+        background-clip: border-box;
+        background-size: 200% auto;
+        color: #fff;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: textclip 2s linear infinite;
+        display: inline-block;
+        font-size: 1.5em;
+        width:600px;
+        text-decoration: none;
+        }
+
+        @keyframes textclip {
+        to {
+            background-position: 200% center;
+        }
+    }
+    </style>
+</head>
+<body>
+    <nav class="scdown" ref="scdown">
+        <h1 class="scdown-text">
+          아래로 스크롤하세요 ↓
+        </h1>
+    </nav>
+
+    <div class="logo"><a><h1>Ai + Chemical = DeepChemi         </h1></a></div>
+    
+
+    <div class="combination"><h1>원소를 조합하고<br>결과를 확인해보세요</h1></div>
+    <div class="go_home"><a href="http://orion.mokpo.ac.kr:8490/home"><h1>Visit Page</h1></a></div>
+
+
+    <script>
+        let observer = new IntersectionObserver((e)=>{
+            e.forEach((box)=>{
+                if(box.isIntersecting){
+                    box.target.style.opacity = 1;
+                    
+                }
+            })
+        })
+
+        let div = document.querySelectorAll('div')
+        observer.observe(div[0])
+        observer.observe(div[1])
+        observer.observe(div[2])
+        observer.observe(div[3])
+
+        var beforePosition = document.documentElement.scrollTop
+
+        document.addEventListener('scroll', function() {
+            var afterPosition = document.documentElement.scrollTop;
+            if (afterPosition > 50) {
+            if(beforePosition < afterPosition ){
+                document.getElementsByClassName('scdown')[0].style.opacity=0;
+                document.querySelectorAll('div')[0].style.width = document.querySelectorAll('h1')[1].offsetWidth;
+            } else {
+                document.getElementsByClassName('scdown')[0].style.opacity=1;
+            }
+            } 
+            beforePosition = afterPosition;
+        });
+    </script>
+</body>
+</html>

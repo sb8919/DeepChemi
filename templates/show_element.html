@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>원소 3D Viewer</title>
+<script type="text/javascript" src="{{ url_for('static',filename='javascript/JSmol.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='javascript/JSmol.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='javascript/JSmolJME.js') }}"></script>
+<script type="text/javascript">
+
+Jmol._isAsync = false;
+
+
+var jmolApplet0; 
+
+var s = document.location.search;
+var element =  {{element|tojson}} ;
+Jmol._debugCode = (s.indexOf("debugcode") >= 0);
+
+jmol_isReady = function(applet) {
+	document.title = (applet._id + " - Jmol " + Jmol.___JmolVersion)
+	Jmol._getElement(applet, "appletdiv").style.border="1px solid black"
+	trans_before = ['₁','₂','₃','₄','₅','₆','₇','₈','₉'];
+	trans_after = ['','2','3','4','5','6','7','8','9'];
+	count = 0 
+	for (el in element){
+		element = element.replace(trans_before[count],trans_after[count]);
+	count += 1;
+	}
+	console.log(element);
+	
+	Jmol._applets['jmolApplet0']._search(':'+element)
+	Jmol.script(jmolApplet0,'select *;label %ez;')
+	Jmol.script(jmolApplet0,'select *;color label white;')
+
+}		
+
+var Info = {
+	width: 1000,
+	height: 1000,
+	debug: false,
+	color: "#000000",
+	use: "HTML5",   // JAVA HTML5 WEBGL are all options
+	j2sPath: "{{ url_for('static',filename='./j2s') }}", // this needs to point to where the j2s directory is.
+	jarPath: "{{ url_for('static',filename='./java') }}",// this needs to point to where the java directory is.
+	jarFile: "JmolAppletSigned.jar",
+	isSigned: true,
+	script: "set zoomlarge false;set antialiasDisplay;load {{ url_for('static',filename='./data/caffeine.mol') }}",
+	serverURL: "https://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
+	readyFunction: jmol_isReady,
+	disableJ2SLoadMonitor: true,
+  disableInitialConsole: true,
+  allowJavaScript: true
+}
+
+$(document).ready(function() {
+  $("#appdiv").html(Jmol.getAppletHtml("jmolApplet0", Info))
+  
+})
+var lastPrompt=0;
+
+var refresh_c = 0;
+function refresh(){
+	if (refresh_c % 2 == 0){
+		Jmol._applets['jmolApplet0']._search(':'+element);
+	}
+	else{
+		Jmol._applets['jmolApplet0']._search(':'+element);
+	}
+	Jmol.script(jmolApplet0,'select *;label %ez;')
+	Jmol.script(jmolApplet0,'select *;color label white;')
+	refresh_c += 1;
+}
+</script>
+<style>
+	body{
+		background-color: black;
+	}
+	h1{
+		color:white;
+	}
+	button{
+		float:center;
+	}
+	div{
+		text-align: center;
+		margin: 0 auto;
+	}
+	h3{
+		color:white;
+		text-align:center;
+	}
+</style>
+</head>
+<body>
+	<div>
+		<h1 id="ele_name">원소이름</h1>
+	</div>
+	<h3 id="ele_length"></h3>
+	<div id="appdiv"></div>
+</body>
+<script>
+	document.getElementById("ele_name").innerHTML='원소 : '+element;
+	el = {{el_length|tojson}}
+	document.getElementById("ele_length").innerHTML=el;
+</script>
+</html>

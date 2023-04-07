@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JSmol -- Jmol/HTML5 Demo</title>
+<script type="text/javascript" src="{{ url_for('static',filename='javascript/JSmol.min.js') }}"></script>
+
+<script type="text/javascript">
+
+Jmol._isAsync = false;
+
+
+var jmolApplet0; 
+
+var s = document.location.search;
+
+Jmol._debugCode = (s.indexOf("debugcode") >= 0);
+
+jmol_isReady = function(applet) {
+	document.title = (applet._id + " - Jmol " + Jmol.___JmolVersion)
+	Jmol._getElement(applet, "appletdiv").style.border="1px solid blue"
+}		
+
+var Info = {
+	width: 520,
+	height: 300,
+	debug: false,
+	color: "#000000",
+	addSelectionOptions: true, //버튼
+	use: "HTML5",   // JAVA HTML5 WEBGL are all options
+	j2sPath: "{{ url_for('static',filename='./j2s') }}", // this needs to point to where the j2s directory is.
+	jarPath: "{{ url_for('static',filename='./java') }}",// this needs to point to where the java directory is.
+	jarFile: "JmolAppletSigned.jar",
+	isSigned: true,
+	script: "set zoomlarge false;set antialiasDisplay;load {{ url_for('static',filename='./data/caffeine.mol') }}",
+	serverURL: "https://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
+	readyFunction: jmol_isReady,
+	disableJ2SLoadMonitor: true,
+  disableInitialConsole: true,
+  allowJavaScript: true
+}
+
+$(document).ready(function() {
+  $("#appdiv").html(Jmol.getAppletHtml("jmolApplet0", Info))
+})
+var lastPrompt=0;
+</script>
+</head>
+<body>
+	<h1>원소 hhh</h1>
+	<h4>'H-H', '(각도 없음)', '1:  0.73 Å'<br>'H-O-H', 104, '1: 1.2 Å'<br>'H-O-O', 99, '1: 1.2 Å'<br>'H-S-H', 93, '1: 1.35 Å'<br>'O-S-O', 113, '2: 1.55 Å'<br></h4>
+	<div id="appdiv"></div>
+
+</body>
+</html>

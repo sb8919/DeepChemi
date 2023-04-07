@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>원자조합</title>
+    <!-- <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css"> -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+        *{
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: rgb(22, 22, 22);
+        }
+        .element_sel{
+            width: fit-content;
+            padding:20px;
+            background-color: rgb(47, 47, 47);
+            border-radius: 0.4rem;
+        }
+        .element{
+            background-color:inherit;
+            color:white;
+        }
+        .sub_btn{
+            background-color:white;
+            color:black;
+        }
+        .out_element{
+            width: 350px;
+            margin-top: 10px;
+            border-radius: 0.4rem;
+            background-color: rgb(47, 47, 47);
+            color:white;
+        }
+        .nav_var{
+            border-radius: 0.4rem 0.4rem 0 0;
+            background-color: rgb(94, 94, 94);
+            padding-bottom:3px;
+        }
+        .report{
+            float:right;
+            width:12px;
+            height: 12px;
+            font-size:7pt;
+            text-align:center;
+            margin: 5px;
+            border-radius:50%;
+            background-color: red;
+        }
+        .out_element{
+            float:right;
+            display:inline-block;
+        }
+        .out_element a{
+            margin:5px;
+            background-color:inherit;
+        }
+        .out_element .nav_var a{
+            text-decoration: none;
+            color:white;
+        }
+        .input_element{
+            margin-top: 10px;
+            width:190px;
+            background-color: rgb(47, 47, 47);
+            color: white;
+            border-radius: 0.4rem;
+        }
+        .input_element a{
+            margin:5px;
+            background-color:inherit;
+        }
+        .show_el    {
+            font-size:14px;
+        }
+    </style>
+</head>
+<script>
+    // 체크박스 개수 세기 및 4개 제한
+    var limit = 4;
+    var count = 0;
+    function count_check(obj){
+        if(obj.checked)
+            count += 1;
+        else
+            count -= 1;
+        if(count > limit){
+            alert("최대 4개만 선택해주세요!");
+            obj.checked = false;
+            count -= 1;
+        }
+    }
+    // 체크한 값 받아오기
+    function check_value(){
+        
+        const element_list = [];
+        const element = document.getElementsByName("chk");
+        for (let i = 0; i < element.length; i++){
+         if(element[i].checked == true){
+            element_list.push(element[i].value);
+         }
+        }
+        link = 'http://orion.mokpo.ac.kr:8490   /';
+        location.href = link + element_list;
+    }
+
+</script>
+<body>
+    <div class="element_sel">
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="H">H</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="Na">Na</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="K">K</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="Be">Be</label>
+        <br>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="Ca">Ca</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="B">B</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="C">C</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="N">N</label>
+        <br>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="P">P</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="O">O</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="S">S</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="F">F</label>
+        <label class="element"><input type="checkbox" name="chk" onClick="count_check(this);" value ="Cl">Cl</label>
+        <br>
+        <input class="sub_btn" type="button" value="combination" onClick="check_value();">
+    </div>
+    <div class="input_element">
+        <div class="nav_var">
+            <a>Input</a>
+        </div>
+        <a>{{input}}</a>
+    </div>
+    {%for e in elements%}
+    <div class="out_element">
+        <div class="nav_var">
+            <a>Result</a>
+            <a href="https://www.naver.com"><div class="report">!</div></a>
+        </div>
+        <a class="show_el">{{e}}</a>
+        
+    </div> 
+    {%endfor%}
+</body>
+</html>
